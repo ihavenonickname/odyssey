@@ -24,6 +24,4 @@ public interface Generator {
 
 	public StringBuilder getCode();
 
-	public String getDefaultExtension();
-
 }

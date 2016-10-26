@@ -1,4 +1,4 @@
-package odyssey.generator.ruby;
+package odyssey.generator.python;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,7 +7,8 @@ import java.util.Stack;
 import odyssey.generator.Generator;
 import odyssey.lexer.Token;
 
-public class RubyGenerator implements Generator {
+public class PythonGenerator implements Generator {
+
 	private static Map<Token, String> binaryOperators = new HashMap<Token, String>();
 
 	private final Stack<ASTNode> semanticStack = new Stack<ASTNode>();
@@ -30,11 +31,11 @@ public class RubyGenerator implements Generator {
 		binaryOperators.put(Token.OR_KEYWORD, " or ");
 	}
 
-	public RubyGenerator() {
-		this("  ");
+	public PythonGenerator() {
+		this("    ");
 	}
 
-	public RubyGenerator(final String identationBlock) {
+	public PythonGenerator(final String identationBlock) {
 		this.identationBlock = identationBlock;
 	}
 
@@ -113,7 +114,13 @@ public class RubyGenerator implements Generator {
 
 	@Override
 	public void accumulateValue(final Token token, final String lexeme) {
-		this.semanticStack.push(new Value(lexeme));
+		if (token == Token.BOOLEAN) {
+			final String value = lexeme.equals("true") ? "True" : "False";
+
+			this.semanticStack.push(new Value(value));
+		} else {
+			this.semanticStack.push(new Value(lexeme));
+		}
 	}
 
 	@Override
@@ -127,9 +134,10 @@ public class RubyGenerator implements Generator {
 
 		for (final ASTNode node : this.semanticStack) {
 			node.setIndentation(0, this.identationBlock);
-			sb.append(node).append(this.newLine).append(this.newLine);
+			sb.append(node);
 		}
 
 		return sb;
 	}
+
 }

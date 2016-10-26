@@ -20,7 +20,7 @@ public class While implements Statement, ASTNode {
 	public void run(final Map<String, Expression> variables) {
 		while (true) {
 			try {
-				if (!(Boolean) this.condition.evaluate(variables).value) {
+				if (!(Boolean) this.condition.evaluate(variables).getValue()) {
 					break;
 				}
 			} catch (final Exception e) {

@@ -15,15 +15,16 @@ public class Interpreter implements Generator {
 	private static Map<Token, Converter> converters = new HashMap<Token, Converter>();
 	private static Map<Token, ArithmecticOperation> arithmeticOperations = new HashMap<Token, ArithmecticOperation>();
 	private static Map<Token, ComparisonOperation> comparisonOperations = new HashMap<Token, ComparisonOperation>();
+	private static Map<Token, LogicalOperation> logicalOperations = new HashMap<Token, LogicalOperation>();
 
 	private final Stack<ASTNode> semancticStack = new Stack<ASTNode>();
 
 	static {
-		arithmeticOperations.put(Token.ADDITION, (a, b) -> a + b);
-		arithmeticOperations.put(Token.SUBTRACTION, (a, b) -> a - b);
-		arithmeticOperations.put(Token.MULTIPLICATION, (a, b) -> a * b);
-		arithmeticOperations.put(Token.DIVISION, (a, b) -> a / b);
-		arithmeticOperations.put(Token.MODULUS, (a, b) -> a % b);
+		arithmeticOperations.put(Token.PLUS_KEYWORD, (a, b) -> a + b);
+		arithmeticOperations.put(Token.MINUS_KEYWORD, (a, b) -> a - b);
+		arithmeticOperations.put(Token.TIMES_KEYWORD, (a, b) -> a * b);
+		arithmeticOperations.put(Token.DIVIDED_KEYWORD, (a, b) -> a / b);
+		arithmeticOperations.put(Token.MODULUS_KEYWORD, (a, b) -> a % b);
 
 		comparisonOperations.put(Token.EQUAL, (a, b) -> a.equals(b));
 		comparisonOperations.put(Token.DIFFERENT, (a, b) -> !a.equals(b));
@@ -31,6 +32,9 @@ public class Interpreter implements Generator {
 		comparisonOperations.put(Token.GREATER_EQUAL, (a, b) -> a >= b);
 		comparisonOperations.put(Token.LESSER, (a, b) -> a < b);
 		comparisonOperations.put(Token.LESSER_EQUAL, (a, b) -> a <= b);
+
+		logicalOperations.put(Token.AND_KEYWORD, (a, b) -> a && b);
+		logicalOperations.put(Token.OR_KEYWORD, (a, b) -> a || b);
 
 		converters.put(Token.TYPE_TEXT, text -> text);
 		converters.put(Token.TYPE_NUMBER, text -> Double.parseDouble(text));
@@ -112,6 +116,10 @@ public class Interpreter implements Generator {
 			final ComparisonOperation op = comparisonOperations.get(token);
 
 			this.semancticStack.push(new ComparisonOperator(left, right, op));
+		} else if (logicalOperations.containsKey(token)) {
+			final LogicalOperation op = logicalOperations.get(token);
+
+			this.semancticStack.push(new LogicalOperator(left, right, op));
 		} else {
 			throwError("Not a valid arithmetic operation");
 		}
@@ -149,11 +157,6 @@ public class Interpreter implements Generator {
 
 	@Override
 	public StringBuilder getCode() {
-		throw new UnsupportedOperationException("Cannot get code from Interpreter");
-	}
-
-	@Override
-	public String getDefaultExtension() {
 		throw new UnsupportedOperationException("Cannot get code from Interpreter");
 	}
 

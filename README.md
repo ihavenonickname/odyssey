@@ -6,6 +6,7 @@ Compile from Odyssey lang to various mainstream languages --or interpret it on t
 
 Languages currently supported
 * Ruby
+* Python
 
 
 ## FizzBuzz example
@@ -13,13 +14,13 @@ Languages currently supported
     let counter be 1
 
     while counter <= 100 do
-        if counter % 15 is 0 do
+        if counter modulus 15 is 0 do
             output "FizzBuzz"
         else
-                if counter % 3 is 0 do
+                if counter modulus 3 is 0 do
                     output "Fizz"
                 else
-                    if counter % 5 is 0 do
+                    if counter modulus 5 is 0 do
                         output "Buzz"
                     else
                         output counter
@@ -27,5 +28,5 @@ Languages currently supported
                 end
         end
 
-        let counter be counter + 1
+        let counter be counter plus 1
     end

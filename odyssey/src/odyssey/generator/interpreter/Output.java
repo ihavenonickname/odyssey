@@ -11,6 +11,6 @@ public class Output implements Statement, ASTNode {
 
 	@Override
 	public void run(final Map<String, Expression> variables) {
-		System.out.println(this.expression.evaluate(variables).value);
+		System.out.println(this.expression.evaluate(variables).getValue());
 	}
 }

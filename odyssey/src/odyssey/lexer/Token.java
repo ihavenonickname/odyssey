@@ -33,6 +33,18 @@ public enum Token {
 
 	AS_KEYWORD("as\\b"),
 
+	PLUS_KEYWORD("plus\\b"),
+
+	MINUS_KEYWORD("minus\\b"),
+
+	DIVIDED_KEYWORD("divided\\b"),
+
+	BY_KEYWORD("by\\b"),
+
+	TIMES_KEYWORD("times\\b"),
+
+	MODULUS_KEYWORD("modulus\\b"),
+
 	// ------------------
 
 	COMMA(","),
@@ -60,18 +72,6 @@ public enum Token {
 
 	@Comparator
 	LESSER("<"),
-
-	// ------------------
-
-	ADDITION("\\+"),
-
-	SUBTRACTION("-"),
-
-	MULTIPLICATION("\\*"),
-
-	DIVISION("/"),
-
-	MODULUS("%"),
 
 	// ------------------
 

@@ -15,8 +15,8 @@ public class ComparisonOperator implements Expression {
 
 	@Override
 	public Literal<Boolean> evaluate(final Map<String, Expression> variables) {
-		final Double left = (Double) this.leftExpression.evaluate(variables).value;
-		final Double right = (Double) this.rightExpression.evaluate(variables).value;
+		final Double left = (Double) this.leftExpression.evaluate(variables).getValue();
+		final Double right = (Double) this.rightExpression.evaluate(variables).getValue();
 
 		return new Literal<Boolean>(this.operation.calc(left, right));
 	}

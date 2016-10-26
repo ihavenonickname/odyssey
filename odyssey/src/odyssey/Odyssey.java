@@ -8,6 +8,7 @@ import java.util.Map;
 
 import odyssey.generator.Generator;
 import odyssey.generator.interpreter.Interpreter;
+import odyssey.generator.python.PythonGenerator;
 import odyssey.generator.ruby.RubyGenerator;
 import odyssey.syntactical.SyntaxAnalyzer;
 
@@ -17,6 +18,7 @@ public class Odyssey {
 
 	static {
 		generators.put(TargetLanguage.RUBY, new RubyGenerator());
+		generators.put(TargetLanguage.PYTHON, new PythonGenerator());
 	}
 
 	private Odyssey() {

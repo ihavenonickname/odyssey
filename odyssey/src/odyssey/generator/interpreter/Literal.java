@@ -3,7 +3,7 @@ package odyssey.generator.interpreter;
 import java.util.Map;
 
 public class Literal<T> implements Expression, ASTNode {
-	final T value;
+	private final T value;
 
 	public Literal(final T value) {
 		this.value = value;

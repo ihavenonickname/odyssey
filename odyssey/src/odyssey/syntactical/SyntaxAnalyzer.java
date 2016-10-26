@@ -88,7 +88,7 @@ public class SyntaxAnalyzer {
 	private void while_() {
 		consumeMandatory(Token.WHILE_KEYWORD);
 
-		condition();
+		expressionLevel1();
 
 		consumeMandatory(Token.DO_KEYWORD);
 
@@ -109,7 +109,7 @@ public class SyntaxAnalyzer {
 	private void if_() {
 		consumeMandatory(Token.IF_KEYWORD);
 
-		condition();
+		expressionLevel1();
 
 		consumeMandatory(Token.DO_KEYWORD);
 
@@ -140,7 +140,7 @@ public class SyntaxAnalyzer {
 	private void output() {
 		consumeMandatory(Token.OUTPUT_KEYWORD);
 
-		condition();
+		expressionLevel1();
 
 		this.codeGenerators.forEach(g -> g.accumulateOutput());
 	}
@@ -157,7 +157,7 @@ public class SyntaxAnalyzer {
 
 		consumeMandatory(Token.BE_KEYWORD);
 
-		condition();
+		expressionLevel1();
 
 		this.codeGenerators.forEach(g -> g.accumulateAssignment());
 	}
@@ -191,12 +191,32 @@ public class SyntaxAnalyzer {
 		throwError();
 	}
 
-	private void condition() {
-		expression();
+	private void expressionLevel1() {
+		expressionLevel2();
+
+		if (consumeOptional(Token.OR_KEYWORD)) {
+			expressionLevel1();
+
+			this.codeGenerators.forEach(g -> g.accumulateBinaryOperation(Token.OR_KEYWORD));
+		}
+	}
+
+	private void expressionLevel2() {
+		expressionLevel3();
+
+		if (consumeOptional(Token.AND_KEYWORD)) {
+			expressionLevel2();
+
+			this.codeGenerators.forEach(g -> g.accumulateBinaryOperation(Token.AND_KEYWORD));
+		}
+	}
+
+	private void expressionLevel3() {
+		expressionLevel4();
 
 		for (final Token token : comparators) {
 			if (consumeOptional(token)) {
-				expression();
+				expressionLevel4();
 
 				this.codeGenerators.forEach(g -> g.accumulateBinaryOperation(token));
 
@@ -205,47 +225,49 @@ public class SyntaxAnalyzer {
 		}
 	}
 
-	private void expression() {
-		term();
+	private void expressionLevel4() {
+		expressionLevel5();
 
-		if (consumeOptional(Token.ADDITION)) {
-			expression();
+		if (consumeOptional(Token.PLUS_KEYWORD)) {
+			expressionLevel4();
 
-			this.codeGenerators.forEach(g -> g.accumulateBinaryOperation(Token.ADDITION));
+			this.codeGenerators.forEach(g -> g.accumulateBinaryOperation(Token.PLUS_KEYWORD));
 		}
 
-		if (consumeOptional(Token.SUBTRACTION)) {
-			expression();
+		if (consumeOptional(Token.MINUS_KEYWORD)) {
+			expressionLevel4();
 
-			this.codeGenerators.forEach(g -> g.accumulateBinaryOperation(Token.SUBTRACTION));
-		}
-	}
-
-	private void term() {
-		value();
-
-		if (consumeOptional(Token.MULTIPLICATION)) {
-			term();
-
-			this.codeGenerators.forEach(g -> g.accumulateBinaryOperation(Token.MULTIPLICATION));
-		}
-
-		if (consumeOptional(Token.DIVISION)) {
-			term();
-
-			this.codeGenerators.forEach(g -> g.accumulateBinaryOperation(Token.DIVISION));
-		}
-
-		if (consumeOptional(Token.MODULUS)) {
-			term();
-
-			this.codeGenerators.forEach(g -> g.accumulateBinaryOperation(Token.MODULUS));
+			this.codeGenerators.forEach(g -> g.accumulateBinaryOperation(Token.MINUS_KEYWORD));
 		}
 	}
 
-	private void value() {
+	private void expressionLevel5() {
+		expressionLevel6();
+
+		if (consumeOptional(Token.TIMES_KEYWORD)) {
+			expressionLevel5();
+
+			this.codeGenerators.forEach(g -> g.accumulateBinaryOperation(Token.TIMES_KEYWORD));
+		}
+
+		if (consumeOptional(Token.DIVIDED_KEYWORD)) {
+			consumeMandatory(Token.BY_KEYWORD);
+
+			expressionLevel5();
+
+			this.codeGenerators.forEach(g -> g.accumulateBinaryOperation(Token.DIVIDED_KEYWORD));
+		}
+
+		if (consumeOptional(Token.MODULUS_KEYWORD)) {
+			expressionLevel5();
+
+			this.codeGenerators.forEach(g -> g.accumulateBinaryOperation(Token.MODULUS_KEYWORD));
+		}
+	}
+
+	private void expressionLevel6() {
 		if (consumeOptional(Token.OPEN_PARENTHESIS)) {
-			expression();
+			expressionLevel1();
 
 			consumeMandatory(Token.CLOSE_PARENTHESIS);
 

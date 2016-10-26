@@ -22,5 +22,9 @@ public class Start {
 
 			return;
 		}
+
+		Odyssey.compile("C:/Users/GBSM/Documents/Java/lexico/font.txt", "C:/Users/GBSM/Documents/Java/lexico/font.rb", TargetLanguage.RUBY);
+		Odyssey.compile("C:/Users/GBSM/Documents/Java/lexico/font.txt", "C:/Users/GBSM/Documents/Java/lexico/font.py", TargetLanguage.PYTHON);
+		System.out.println("ok");
 	}
 }

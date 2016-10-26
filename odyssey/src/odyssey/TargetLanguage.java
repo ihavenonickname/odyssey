@@ -1,5 +1,7 @@
 package odyssey;
 
 public enum TargetLanguage {
-	RUBY
+	RUBY,
+
+	PYTHON
 }

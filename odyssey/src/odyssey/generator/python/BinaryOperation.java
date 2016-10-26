@@ -1,4 +1,4 @@
-package odyssey.generator.ruby;
+package odyssey.generator.python;
 
 public class BinaryOperation implements ASTNode {
 	private final ASTNode left;

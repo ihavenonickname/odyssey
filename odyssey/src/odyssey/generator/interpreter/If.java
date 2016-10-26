@@ -23,7 +23,7 @@ public class If implements Statement, ASTNode {
 		Boolean resultCondition;
 
 		try {
-			resultCondition = (Boolean) this.condition.evaluate(variables).value;
+			resultCondition = (Boolean) this.condition.evaluate(variables).getValue();
 		} catch (final Exception e) {
 			throw new RuntimeException("Not a boolean expression");
 		}
